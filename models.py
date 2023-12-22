@@ -2,7 +2,7 @@
 
 from typing import TYPE_CHECKING
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.declarative import DeclarativeMeta as Base
