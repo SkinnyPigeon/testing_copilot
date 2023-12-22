@@ -71,8 +71,7 @@ def check_user_credentials(email, password):
                 return False, "User credentials are incorrect"
         else:
             return False, "User credentials are incorrect"
-        
-        
+
 
 def display_results_of_create_user(result, message):
     """Displays the results of the create_user function.
@@ -115,4 +114,3 @@ result, message = check_user_credentials("me3@me.com", "password")
 display_results_of_check_user_credentials(result, message)
 result, message = check_user_credentials("me@me.com", "password")
 display_results_of_check_user_credentials(result, message)
-
