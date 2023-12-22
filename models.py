@@ -1,9 +1,13 @@
 """Uses SQLAlchemy to create ORM models for the database."""
 
+from typing import TYPE_CHECKING, Any
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
+if TYPE_CHECKING:
+    from sqlalchemy.ext.declarative import DeclarativeMeta as Base
+else:
+    Base = declarative_base()
 
 
 class User(Base):

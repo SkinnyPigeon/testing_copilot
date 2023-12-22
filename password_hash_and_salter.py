@@ -11,12 +11,11 @@ def hash_password(password: str):
 
     Returns:
         hashed_password (str): The hashed password."""
-    password = password.encode()
-    hashed = bcrypt.hashpw(password, bcrypt.gensalt())
+    hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
     return hashed.decode("utf-8")
 
 
-def check_password(password: str, hashed: str):
+def check_password(password: str, hashed: bytes):
     """Checks a password against a hash using bcrypt.
 
     Parameters:
@@ -25,8 +24,7 @@ def check_password(password: str, hashed: str):
 
     Returns:
         match (bool): Whether the password matches the hash."""
-    password = password.encode()
-    if bcrypt.checkpw(password, hashed):
+    if bcrypt.checkpw(password.encode(), hashed):
         return True
     else:
         return False
