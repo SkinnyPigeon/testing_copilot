@@ -1,12 +1,9 @@
-import os
-from unittest.mock import patch
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import User, Base
 from database_functions import (
     create_session,
-    get_url,
     create_user_table,
     create_user,
     check_user_credentials,
