@@ -78,8 +78,10 @@ def check_user_credentials(email: str, password: str) -> Tuple[bool, str]:
         user = session.query(User).filter(User.email == email).first()
         if user:
             try:
-                check_password(password, user.password.encode())
-                return True, "User credentials are correct"
+                if check_password(password, user.password.encode()):
+                    return True, "User credentials are correct"
+                else:
+                    return False, "User credentials are incorrect"
             except ValueError:
                 return False, "User credentials are incorrect"
         else:
@@ -113,17 +115,18 @@ def display_results(result: bool, message: str, interaction: str) -> None:
         print(message)
 
 
-url = get_url()
-if url:
-    create_user_table(create_engine(os.environ["DATABASE_URL"]))
-    result, message = create_user("me", "me@me.com", "password")
-    display_results(result, message, "user_created")
-    result, message = create_user("me", "me2@me.com", "password")
-    display_results(result, message, "user_created")
+# url = get_url()
+# if url:
+#     create_user_table(create_engine(os.environ["DATABASE_URL"]))
+#     result, message = create_user("me", "me@me.com", "password")
+#     display_results(result, message, "user_created")
+#     result, message = create_user("me", "me2@me.com", "password")
+#     display_results(result, message, "user_created")
 
-    result, message = check_user_credentials("me3@me.com", "password")
-    display_results(result, message, "user_credentials")
-    result, message = check_user_credentials("me@me.com", "password")
-    display_results(result, message, "user_credentials")
-else:
-    print("DATABASE_URL not found in environment variables")
+
+#     result, message = check_user_credentials("me3@me.com", "password")
+#     display_results(result, message, "user_credentials")
+#     result, message = check_user_credentials("me@me.com", "password")
+#     display_results(result, message, "user_credentials")
+# else:
+#     print("DATABASE_URL not found in environment variables")
