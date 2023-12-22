@@ -60,7 +60,7 @@ def test_check_user_credentials(patched_create_session):
     assert message == "User credentials are correct"
 
 
-def test_check_user_incorrect_credentials(patched_create_session, session):
+def test_check_user_incorrect_credentials(patched_create_session):
     create_user("testuser", "test@example.com", "testpassword")
     result, message = check_user_credentials("test@example.com", "wrongpassword")
     assert result is False
