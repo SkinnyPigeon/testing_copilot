@@ -1,0 +1,18 @@
+[BASIC]
+
+max-args = 7
+docstring-min-length=10
+good-names=i,df
+
+[FORMAT]
+max-line-length=120
+
+# Disable the message(s) with the given id(s).
+# W1201: logging-not-lazy
+disable=R0903, E1101, E0401, W1201, logging-fstring-interpolation, raise-missing-from
+
+[MASTER]
+extension-pkg-whitelist=pydantic
+
+[SIMILARITIES]
+ignore-imports=yes
