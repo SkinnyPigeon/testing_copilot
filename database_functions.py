@@ -1,6 +1,7 @@
 """This module contains functions for interacting with the database."""
 
 import os
+from typing import Union, Tuple
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
@@ -14,19 +15,32 @@ def create_session() -> sessionmaker:
 
     Returns:
         session: A session to the database."""
-    DATABASE_URL = os.getenv("DATABASE_URL")
-    engine = create_engine(DATABASE_URL)
+    url = get_url()
+    if not url:
+        return
+    engine = create_engine(url)
     Session = sessionmaker(bind=engine)
     return Session()
 
 
+def get_url() -> Union[str, None]:
+    """Gets the database url from the environment variables.
+
+    Returns:
+        str: The database url.
+        None: If the database url is not found.
+    """
+    return os.getenv("DATABASE_URL")
+
+
 def create_user_table(engine: Engine) -> None:
     """Creates the user table in the database."""
+
     with create_session() as _:
         User.metadata.create_all(engine)
 
 
-def create_user(username: str, email: str, password: str) -> (bool, str):
+def create_user(username: str, email: str, password: str) -> Tuple[bool, str]:
     """Creates a user in the database.
 
     Parameters:
@@ -49,7 +63,7 @@ def create_user(username: str, email: str, password: str) -> (bool, str):
             return False, "Your email has already been registered"
 
 
-def check_user_credentials(email: str, password: str) -> (bool, str):
+def check_user_credentials(email: str, password: str) -> Tuple[bool, str]:
     """Checks the credentials of a user.
 
     Parameters:
@@ -99,14 +113,17 @@ def display_results(result: bool, message: str, interaction: str) -> None:
         print(message)
 
 
-create_user_table(create_engine(os.environ["DATABASE_URL"]))
-result, message = create_user("me", "me@me.com", "password")
-display_results(result, message, "user_created")
-result, message = create_user("me", "me2@me.com", "password")
-display_results(result, message, "user_created")
+url = get_url()
+if url:
+    create_user_table(create_engine(os.environ["DATABASE_URL"]))
+    result, message = create_user("me", "me@me.com", "password")
+    display_results(result, message, "user_created")
+    result, message = create_user("me", "me2@me.com", "password")
+    display_results(result, message, "user_created")
 
-
-result, message = check_user_credentials("me3@me.com", "password")
-display_results(result, message, "user_credentials")
-result, message = check_user_credentials("me@me.com", "password")
-display_results(result, message, "user_credentials")
+    result, message = check_user_credentials("me3@me.com", "password")
+    display_results(result, message, "user_credentials")
+    result, message = check_user_credentials("me@me.com", "password")
+    display_results(result, message, "user_credentials")
+else:
+    print("DATABASE_URL not found in environment variables")

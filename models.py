@@ -1,6 +1,6 @@
 """Uses SQLAlchemy to create ORM models for the database."""
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
